@@ -8,7 +8,7 @@ VALUES
 	("Gestión de la Investigación, Innovación e Interacción social"),
     ("Gestión de Cultura y Bienestar"),
 	("Gestión de Control y del Mejoramiento Continuo");
--------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`tipo_control`
 (`NOMBRE_TIPO_CONTROL`)
 VALUES
@@ -17,14 +17,14 @@ VALUES
 	("Control Operativo"),
 	("Control Legal"),
 	("Control Concurrente");
--------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`roles`
 (`NOMBRE_ROL`) VALUES
 	('ROLE_administrador'),
 	('ROLE_auditor'),
     ('ROLE_liderDeProceso'),
     ('ROLE_responsable');
------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`dependencias`
 (`DEPENDENCIA`) VALUES
 	('Consejo Superior'),
@@ -69,7 +69,7 @@ INSERT INTO `db_proyecto_oci`.`dependencias`
 	('Comité de Conciliación'),
 	('Rectoría'),
 	('Vicerrectoría');
-    ------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`cargos`
 (`NOMBRE_CARGO`, `ID_DEPENDENCIA`) VALUES 
 	("Rector", 42),
@@ -679,12 +679,12 @@ INSERT INTO `db_proyecto_oci`.`cargos`
     ("Operario Calificado", 41),
     ("Operario Calificado", 42),
     ("Operario Calificado", 43);
--------------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`personas` 
 (`ID_CARGO`, `NOMBRES`, `APELLIDOS`, `IDENTIFICACION`, `TIPO_DOCUMENTO`, `EMAIL`) VALUES
 (1, "Usuario", "Administrador", 12345, "CC", "admin@prod.com"), 
 (310, "Control", "Interno", 891500319, "CC", "cinterno@unicauca.edu.co");
--------------------------------------------------------------------------------
+
 INSERT INTO `db_proyecto_oci`.`usuarios` 
 (`ID_ROL`, `ID_PERSONA`, `USUARIO`, `PASSWORD`) VALUES
 (1, 1, "admin@prod.com", "$2a$10$/4l7prK8aRkerY184GUtIejKj6ZVnUpwpoJ2U7qEbnHW7d1Sdc5k2"),

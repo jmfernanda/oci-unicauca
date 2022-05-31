@@ -15,7 +15,7 @@ services:
   
   oci_backend:
     build:
-      context: backendOCI/
+      context: oci-backend/
       dockerfile: Dockerfile
     container_name: oci_backend
     ports:
@@ -33,7 +33,7 @@ services:
 
   oci_frontend:
     build:
-      context: frontendOCI/
+      context: oci-frontend/
       dockerfile: Dockerfile
     container_name: oci_frontend
     ports:

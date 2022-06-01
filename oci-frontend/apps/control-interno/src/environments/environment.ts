@@ -3,12 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: true,
-  // apiRoot: 'https://back-control-interno.herokuapp.com/api/',
-  // authRoot: 'https://back-control-interno.herokuapp.com/oauth/',
-  apiRoot: 'http://localhost:5000/api/',
-  authRoot: 'http://localhost:5000/oauth/',
-  // apiRoot: 'https://oficina-control-interno.herokuapp.com/api/',
-  // authRoot: 'https://oficina-control-interno.herokuapp.com/oauth/',
+  // apiRoot: 'http://localhost:5000/api/',
+  // authRoot: 'http://localhost:5000/oauth/',
+  apiRoot: 'https://fiet.unicauca.edu.co/oci-api/api/',
+  authRoot: 'https://fiet.unicauca.edu.co/oci-api/oauth/',
 };
 
 /*

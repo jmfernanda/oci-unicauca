@@ -666,12 +666,12 @@ INSERT INTO `db_proyecto_oci`.`cargos`
     ("Operario Calificado", 39),
     ("Operario Calificado", 40),
     ("Operario Calificado", 41),
-    ("Operario Calificado", 42),
+    ("Operario Calificado", 42);
 
 INSERT INTO `db_proyecto_oci`.`personas` 
 (`ID_CARGO`, `NOMBRES`, `APELLIDOS`, `IDENTIFICACION`, `TIPO_DOCUMENTO`, `EMAIL`) VALUES
 (1, "Usuario", "Administrador", 12345, "CC", "admin@prod.com"), 
-(310, "Control", "Interno", 891500319, "CC", "cinterno@unicauca.edu.co");
+(308, "Control", "Interno", 891500319, "CC", "cinterno@unicauca.edu.co");
 
 INSERT INTO `db_proyecto_oci`.`usuarios` 
 (`ID_ROL`, `ID_PERSONA`, `USUARIO`, `PASSWORD`) VALUES

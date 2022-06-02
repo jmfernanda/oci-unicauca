@@ -227,22 +227,14 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE `GET_EVIDENCIAS_POR_IDACTIVIDAD`(in_id_actividad INT)
 BEGIN
-	SELECT a.ID_ACTIVIDAD,
-			e.ID_EVIDENCIA,
-			s.ID_SOPORTE,
-			eva.ID_EVALUACION,
-			e.EVIDENCIA,
-            e.fechaCargue,
-			e.linkEvidencia,
-			eva.ESTADO estadoEvaluacion,
-			eva.OBSERVACION
-	FROM actividades a 
-			INNER JOIN evidencias e 
-			ON a.ID_ACTIVIDAD = e.ID_ACTIVIDAD
-			left JOIN soportes s 
-			ON s.ID_EVIDENCIA = e.ID_EVIDENCIA
-			INNER JOIN evaluaciones eva 
-			ON eva.ID_EVIDENCIA = e.ID_EVIDENCIA
+	SELECT a.ID_ACTIVIDAD, e.ID_EVIDENCIA, s.ID_SOPORTE, eva.ID_EVALUACION, e.EVIDENCIA, e.fechaCargue, e.linkEvidencia,
+	eva.ESTADO estadoEvaluacion, eva.OBSERVACION FROM actividades a 
+	INNER JOIN evidencias e 
+	ON a.ID_ACTIVIDAD = e.ID_ACTIVIDAD
+	left JOIN soportes s 
+	ON s.ID_EVIDENCIA = e.ID_EVIDENCIA
+	INNER JOIN evaluaciones eva 
+	ON eva.ID_EVIDENCIA = e.ID_EVIDENCIA
 	WHERE	a.ID_ACTIVIDAD = in_id_actividad;
 END$$
 DELIMITER ;

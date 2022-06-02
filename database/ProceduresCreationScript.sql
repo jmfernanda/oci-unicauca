@@ -259,63 +259,55 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE `GET_RESUMEN_PLAN_MEJORAMIENTO`(in_id_plan VarChar(80))
 BEGIN
-	SELECT	PM.ID_PLAN_MEJORAMIENTO,
-			PM.ID_PERSONA AS ID_RESPONSABLE,
-			PM.NOMBRE_PLAN,
-            CONCAT(RESPONSABLE.NOMBRES, ' ', RESPONSABLE.APELLIDOS) as responsable,
-			PM.FECHA_FIN AS FECHA_CIERRE,
-			IFNULL(max(eva.fecha_evaluacion), PM.FECHA_INICIO) as fecha_ultima_modificacion,
-			PM.ESTADO_PLAN,
-			O.DESCRIPCION 
-	FROM	planes_de_mejoramiento PM
-			INNER JOIN personas RESPONSABLE
-			ON PM.ID_PERSONA = RESPONSABLE.ID_PERSONA
-			LEFT JOIN observaciones O
-			ON O.ID_PLAN_MEJORAMIENTO = PM.ID_PLAN_MEJORAMIENTO
-			INNER JOIN hallazgos h 
-			ON PM.ID_PLAN_MEJORAMIENTO = h.ID_PLAN_MEJORAMIENTO
-			INNER JOIN causas c 
-			ON h.ID_HALLAZGO = c.ID_HALLAZGO
-			INNER JOIN acciones a 
-			ON c.ID_CAUSA = a.ID_CAUSA
-			INNER JOIN actividades ac 
-			ON a.ID_ACCION = ac.ID_ACCION
-			INNER JOIN evidencias e 
-			ON ac.ID_ACTIVIDAD = e.ID_ACTIVIDAD
-			INNER JOIN evaluaciones eva 
-			ON e.ID_EVIDENCIA = eva.ID_EVIDENCIA
-	WHERE 	PM.ID_PLAN_MEJORAMIENTO = in_id_plan;
+	SELECT	PM.ID_PLAN_MEJORAMIENTO,PM.ID_PERSONA AS ID_RESPONSABLE,
+	PM.NOMBRE_PLAN,
+	CONCAT(RESPONSABLE.NOMBRES, ' ', RESPONSABLE.APELLIDOS) as responsable,
+	PM.FECHA_FIN AS FECHA_CIERRE,
+	IFNULL(max(eva.fecha_evaluacion), PM.FECHA_INICIO) as fecha_ultima_modificacion,
+	PM.ESTADO_PLAN, O.DESCRIPCION 
+	FROM planes_de_mejoramiento PM
+	INNER JOIN personas RESPONSABLE
+	ON PM.ID_PERSONA = RESPONSABLE.ID_PERSONA
+	LEFT JOIN observaciones O
+	ON O.ID_PLAN_MEJORAMIENTO = PM.ID_PLAN_MEJORAMIENTO
+	INNER JOIN hallazgos h 
+	ON PM.ID_PLAN_MEJORAMIENTO = h.ID_PLAN_MEJORAMIENTO
+	INNER JOIN causas c 
+	ON h.ID_HALLAZGO = c.ID_HALLAZGO
+	INNER JOIN acciones a 
+	ON c.ID_CAUSA = a.ID_CAUSA
+	INNER JOIN actividades ac 
+	ON a.ID_ACCION = ac.ID_ACCION
+	INNER JOIN evidencias e 
+	ON ac.ID_ACTIVIDAD = e.ID_ACTIVIDAD
+	INNER JOIN evaluaciones eva 
+	ON e.ID_EVIDENCIA = eva.ID_EVIDENCIA
+	WHERE PM.ID_PLAN_MEJORAMIENTO = in_id_plan;
 END$$
 DELIMITER ;
 
 DELIMITER $$
 CREATE PROCEDURE `GET_RESUMEN_PLAN_MEJORAMIENTO_MEJORADA`(in_id_plan VarChar(80))
 BEGIN
-	SELECT 	h.ID_HALLAZGO,
-			h.HALLAZGO,
-            c.ID_CAUSA,
-            c.CAUSA,
-            a.ID_ACCION,
-            a.ACCION as TIPO_ACCION,
-            a.DESCRIPCION,
-            ac.ID_ACTIVIDAD,
-            ac.INDICADOR,
-            ac.VALOR_UNIDAD,
-            ac.PERIODICIDAD,
-            ac.RECURSO,
-            CONCAT(RESPONSABLE.NOMBRES, ' ', RESPONSABLE.APELLIDOS) as responsable
-	FROM	planes_de_mejoramiento PM
-			LEFT JOIN hallazgos h 
-			ON PM.ID_PLAN_MEJORAMIENTO = h.ID_PLAN_MEJORAMIENTO
-            LEFT JOIN causas c 
-			ON h.ID_HALLAZGO = c.ID_HALLAZGO
-            LEFT JOIN acciones a 
-			ON c.ID_CAUSA = a.ID_CAUSA
-            LEFT JOIN actividades ac 
-			ON a.ID_ACCION = ac.ID_ACCION
-            LEFT JOIN personas RESPONSABLE
-			ON ac.ID_RESPONSABLE = RESPONSABLE.ID_PERSONA
-	WHERE 	h.ID_PLAN_MEJORAMIENTO = in_id_plan;
+	SELECT 	h.ID_HALLAZGO,h.HALLAZGO,
+	c.ID_CAUSA, c.CAUSA, a.ID_ACCION,
+	a.ACCION as TIPO_ACCION, a.DESCRIPCION,
+	ac.ID_ACTIVIDAD, ac.INDICADOR,
+	ac.VALOR_UNIDAD, ac.PERIODICIDAD,
+	ac.RECURSO,
+	CONCAT(RESPONSABLE.NOMBRES, ' ', RESPONSABLE.APELLIDOS) as responsable
+	FROM planes_de_mejoramiento PM
+	LEFT JOIN hallazgos h 
+	ON PM.ID_PLAN_MEJORAMIENTO = h.ID_PLAN_MEJORAMIENTO
+	LEFT JOIN causas c 
+	ON h.ID_HALLAZGO = c.ID_HALLAZGO
+	LEFT JOIN acciones a 
+	ON c.ID_CAUSA = a.ID_CAUSA
+	LEFT JOIN actividades ac 
+	ON a.ID_ACCION = ac.ID_ACCION
+	LEFT JOIN personas RESPONSABLE
+	ON ac.ID_RESPONSABLE = RESPONSABLE.ID_PERSONA
+	WHERE h.ID_PLAN_MEJORAMIENTO = in_id_plan;
 END$$
 DELIMITER ;
 
@@ -356,28 +348,28 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE `GET_TABLA_AUDITOR_todo`(in_id_persona INT)
 BEGIN
-    declare EVALUACIONES_EFECTIVAS int;
-    declare EVALUACIONES_NO_EFECTIVAS int;
-    declare  EVALUACIONES_APROBADAS int;
+	declare EVALUACIONES_EFECTIVAS int;
+	declare EVALUACIONES_NO_EFECTIVAS int;
+	declare  EVALUACIONES_APROBADAS int;
 
-    SELECT  count(eva1.ID_EVALUACION) into EVALUACIONES_EFECTIVAS
-		FROM	planes_de_mejoramiento pm1
-		INNER JOIN hallazgos h1 
-		ON pm1.ID_PLAN_MEJORAMIENTO = h1.ID_PLAN_MEJORAMIENTO
-		INNER JOIN causas c1 
-		ON h1.ID_HALLAZGO = c1.ID_HALLAZGO
-		INNER JOIN acciones a1 
-		ON c1.ID_CAUSA = a1.ID_CAUSA
-		INNER JOIN actividades ac1 
-		ON a1.ID_ACCION = ac1.ID_ACCION
-		INNER JOIN evidencias e1 
-		ON ac1.ID_ACTIVIDAD = e1.ID_ACTIVIDAD
-		INNER JOIN evaluaciones eva1 
-		ON e1.ID_EVIDENCIA = eva1.ID_EVIDENCIA
-		WHERE	pm1.ID_PERSONA = in_id_persona
-			AND eva1.ESTADO = 1
-			AND eva1.FECHA_EVALUACION <= ac1.fechaEjecucion
-		GROUP BY pm1.ID_PLAN_MEJORAMIENTO;
+	SELECT count(eva1.ID_EVALUACION) into EVALUACIONES_EFECTIVAS
+	FROM planes_de_mejoramiento pm1
+	INNER JOIN hallazgos h1 
+	ON pm1.ID_PLAN_MEJORAMIENTO = h1.ID_PLAN_MEJORAMIENTO
+	INNER JOIN causas c1 
+	ON h1.ID_HALLAZGO = c1.ID_HALLAZGO
+	INNER JOIN acciones a1 
+	ON c1.ID_CAUSA = a1.ID_CAUSA
+	INNER JOIN actividades ac1 
+	ON a1.ID_ACCION = ac1.ID_ACCION
+	INNER JOIN evidencias e1 
+	ON ac1.ID_ACTIVIDAD = e1.ID_ACTIVIDAD
+	INNER JOIN evaluaciones eva1 
+	ON e1.ID_EVIDENCIA = eva1.ID_EVIDENCIA
+	WHERE	pm1.ID_PERSONA = in_id_persona
+	AND eva1.ESTADO = 1
+	AND eva1.FECHA_EVALUACION <= ac1.fechaEjecucion
+	GROUP BY pm1.ID_PLAN_MEJORAMIENTO;
 
 	SELECT  count(eva2.ID_EVALUACION) into EVALUACIONES_NO_EFECTIVAS
 	FROM	planes_de_mejoramiento pm2
@@ -394,8 +386,8 @@ BEGIN
 	INNER JOIN evaluaciones eva2
 	ON e2.ID_EVIDENCIA = eva2.ID_EVIDENCIA
 	WHERE	pm2.ID_PERSONA = in_id_persona
-		AND eva2.ESTADO = 1
-		AND eva2.FECHA_EVALUACION > ac2.fechaEjecucion
+	AND eva2.ESTADO = 1
+	AND eva2.FECHA_EVALUACION > ac2.fechaEjecucion
 	GROUP BY pm2.ID_PLAN_MEJORAMIENTO;
 
 	SELECT  count(eva3.ID_EVALUACION) into EVALUACIONES_APROBADAS
@@ -415,8 +407,8 @@ BEGIN
 	WHERE	pm3.ID_PERSONA = in_id_persona AND eva3.ESTADO = 1
 	GROUP BY pm3.ID_PLAN_MEJORAMIENTO;
 
-    SELECT * FROM planes_de_mejoramiento pm
-    INNER JOIN personas auditor
+	SELECT * FROM planes_de_mejoramiento pm
+	INNER JOIN personas auditor
 	ON pm.ID_PERSONA = auditor.ID_PERSONA
 	INNER JOIN hallazgos h 
 	ON pm.ID_PLAN_MEJORAMIENTO = h.ID_PLAN_MEJORAMIENTO
@@ -440,17 +432,17 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE `GET_TABLA_RESPONSABLE`(in_id_persona INT)
 BEGIN
-	SELECT 	pm.ID_PLAN_MEJORAMIENTO as id_plan,
-			CONCAT(auditor.NOMBRES, ' ', auditor.APELLIDOS) as auditor,
-			pm.nombre_plan,
-			pm.ESTADO_PLAN,
-			IFNULL(max(eva.fecha_evaluacion), pm.fecha_inicio) as fecha_ultima_modificacion,
-			pm.FECHA_FIN,
-            ac.ESTADO as estado_actividad,
-			pm.avance as porcentaje_avance,
-            a.DESCRIPCION,
-            ac.ID_ACCION
-	FROM	planes_de_mejoramiento pm
+SELECT 	pm.ID_PLAN_MEJORAMIENTO as id_plan,
+	CONCAT(auditor.NOMBRES, ' ', auditor.APELLIDOS) as auditor,
+	pm.nombre_plan,
+	pm.ESTADO_PLAN,
+	IFNULL(max(eva.fecha_evaluacion), pm.fecha_inicio) as fecha_ultima_modificacion,
+	pm.FECHA_FIN,
+	ac.ESTADO as estado_actividad,
+	pm.avance as porcentaje_avance,
+	a.DESCRIPCION,
+	ac.ID_ACCION
+	FROM planes_de_mejoramiento pm
 	INNER JOIN personas auditor
 	ON pm.ID_PERSONA = auditor.ID_PERSONA
 	INNER JOIN hallazgos h 
@@ -465,10 +457,10 @@ BEGIN
 	ON ac.ID_ACTIVIDAD = e.ID_ACTIVIDAD
 	LEFT JOIN evaluaciones eva 
 	ON e.ID_EVIDENCIA = eva.ID_EVIDENCIA
-	WHERE	ac.ID_RESPONSABLE = in_id_persona
-    AND pm.ESTADO_PLAN != 'Inactivo'
-    GROUP BY ac.ID_ACCION
-    order by pm.ID_PLAN_MEJORAMIENTO;
+	WHERE ac.ID_RESPONSABLE = in_id_persona
+	AND pm.ESTADO_PLAN != 'Inactivo'
+	GROUP BY ac.ID_ACCION
+	order by pm.ID_PLAN_MEJORAMIENTO;
 END$$
 DELIMITER ;
 
@@ -491,7 +483,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE `update_estado_plan`(in_estado_plan VarChar(20), in_id_plan VarChar(80))
 BEGIN
-    UPDATE PLANES_DE_MEJORAMIENTO SET ESTADO_PLAN = in_estado_plan
+	UPDATE PLANES_DE_MEJORAMIENTO SET ESTADO_PLAN = in_estado_plan
 	WHERE ID_PLAN_MEJORAMIENTO = in_id_plan;
 END$$
 DELIMITER ;

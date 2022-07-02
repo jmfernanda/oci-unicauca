@@ -5,6 +5,7 @@ Repositorio para almacenar el código fuente frontend de la aplicación web que 
 - Angular 11
 - NodeJS versión 14
 - Node Package Manager (npm)
+- NX [(documentación)](https://nx.dev/)
 
 # Pasos para la ejecución
 - Ejecutar el comando `npm install`

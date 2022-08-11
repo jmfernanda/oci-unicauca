@@ -5,8 +5,8 @@ export const environment = {
   production: true,
   // apiRoot: 'http://localhost:5000/api/',
   // authRoot: 'http://localhost:5000/oauth/',
-  apiRoot: 'https://fiet.unicauca.edu.co/oci-api/api/',
-  authRoot: 'https://fiet.unicauca.edu.co/oci-api/oauth/',
+  apiRoot: 'https://rectoria.unicauca.edu.co/oci-api/api/',
+  authRoot: 'https://rectoria.unicauca.edu.co/oci-api/oauth/',
 };
 
 /*
